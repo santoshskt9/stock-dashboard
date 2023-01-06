@@ -4,32 +4,27 @@ var currSymbol = document.getElementById('searchbar').value;
 var searchSymbol = "";
 var newId = 0;
 var searchDataList = [];
-var priceData = [];
 
-const stockData = async () => {
-    await fetch('')
-}
-
-const changeHandler = (val) => {
-    if (val.length >= 3) {
-        setTimeout(() => {
-            console.log(val);
-            currSymbol = val;
-            clearInterval();
-        }, 500);
-    }
-}
+// const changeHandler = (val) => {
+//     if (val.length >= 3) {
+//         setTimeout(() => {
+//             console.log(val);
+//             currSymbol = val;
+//             clearInterval();
+//         }, 500);
+//     }
+// }
 
 const searchHandler = () => {
     val = document.getElementById('searchbar').value;
-    console.log('searched')
+    // console.log('searched')
     if (val.length >= 3) {
-        console.log(val);
+        // console.log(val);
         searchSymbol = val;
         fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchSymbol}&apikey=FIUHNS8OOYB45OMI`)
             .then(response => response.json())
             .then((data) => {
-                console.log("Searched Symbol: ", data);
+                // console.log("Searched Symbol: ", data);
                 searchDataList = data.bestMatches;
                 if (searchDataList.length > 0) {
                     for (i = 0; i < searchDataList.length; i++) {
@@ -38,7 +33,7 @@ const searchHandler = () => {
                 } else {
                     document.getElementById('stocks').innerHTML += `<option value="No Stocks Found">No Stocks Found</option>`
                 }
-                console.log()
+                // console.log()
             })
         clearInterval();
     }
@@ -77,10 +72,10 @@ const getIntraday = async () => {
     await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${document.getElementById('searchbar').value}&interval=5min&apikey=FIUHNS8OOYB45OMI`)
         .then(response => response.json())
         .then((data) => {
-            console.log('fetchedNew Data', data)
+            // console.log('fetchedNew Data', data)
             // currSymbol = data['Meta Data']['2. Symbol'];
             if ('Request Limit is exceeded, Please wait for 1 min and try again!', data['Note']) {
-                console.log(data['Note']);
+                // console.log(data['Note']);
                 alert(data['Note']);
             } else {
 
@@ -121,10 +116,10 @@ const getDaily = async () => {
     await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${document.getElementById('searchbar').value}&apikey=FIUHNS8OOYB45OMI`)
         .then(response => response.json())
         .then((data) => {
-            console.log('fetchedNew Data', data)
+            // console.log('fetchedNew Data', data)
             // currSymbol = data['Meta Data']['2. Symbol'];
             if ('Request Limit is exceeded, Please wait for 1 min and try again!', data['Note']) {
-                console.log(data['Note']);
+                // console.log(data['Note']);
                 alert(data['Note']);
             } else {
 
@@ -165,10 +160,10 @@ const getWeekly = async () => {
     await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=${document.getElementById('searchbar').value}&apikey=FIUHNS8OOYB45OMI`)
         .then(response => response.json())
         .then((data) => {
-            console.log('fetchedNew Data', data)
+            // console.log('fetchedNew Data', data)
             // currSymbol = data['Meta Data']['2. Symbol'];
             if (data['Note']) {
-                console.log(data['Note']);
+                // console.log(data['Note']);
                 alert('Request Limit is exceeded, Please wait for 1 min and try again!', data['Note']);
             } else {
 
@@ -209,10 +204,10 @@ const getMonthly = async () => {
     await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${document.getElementById('searchbar').value}&apikey=FIUHNS8OOYB45OMI`)
         .then(response => response.json())
         .then((data) => {
-            console.log('fetchedNew Data', data)
+            // console.log('fetchedNew Data', data)
             // currSymbol = data['Meta Data']['2. Symbol'];
             if (data['Note']) {
-                console.log('Request Limit is exceeded, Please wait for 1 min and try again!', data['Note']);
+                // console.log('Request Limit is exceeded, Please wait for 1 min and try again!', data['Note']);
                 alert(data['Note']);
             } else {
                 createMonthlyPriceObj(data, (err, obj) => {
@@ -336,16 +331,15 @@ const weekly = document.getElementById('btn-weekly');
 
 var myTimeout;
 searchbar.addEventListener('keyup', (e) => {
-    console.log('keyup')
+   
     const value = e.target.value;
     myTimeout = setTimeout(searchHandler, 2000);
     // changeHandler(value);
 });
 searchbar.addEventListener('keydown', (e) => {
-    console.log('keydown')
     clearTimeout(myTimeout);
 });
-// searchbar.onkeydown = console.log('keydown');
+
 
 searchBtn.addEventListener('click', () => {
     getIntraday();
